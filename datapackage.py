@@ -83,7 +83,7 @@ richList = []
 print("Sorting lists...")
 allMessages.sort(key=itemgetter(2))
 
-richList.append(f"Restart's Discord Timeline\nYou sent: {len(allMessages)}")
+richList.append(f"Restart's Discord Timeline\nYou have {len(allMessages)} messages on Discord\n\n---------------\n")
 
 # Generate rich strings for final .txt file
 print("Generating strings...")
