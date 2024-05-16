@@ -98,9 +98,9 @@ for message in allMessages:
 
 # Write rich strings to final .txt file
 print("Writing to file...")
-with open("messages.txt", "w", errors="ignore") as file:
+with open("timeline.txt", "w", errors="ignore") as file:
     for item in richList:
         file.write(item)
 
 # All done!
-print(f"All done! Processed {len(allMessages)} messages. Find your timeline in the messages.txt file.")
+print(f"All done! Processed {len(allMessages)} messages. Find your timeline in the timeline.txt file.")
