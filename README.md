@@ -1,6 +1,9 @@
 # Discord Message Timeline
 The Discord Message Timeline allows you to save the timeline of all of your Discord Messages to a txt file.
 
+> [!IMPORTANT]
+> Messages deleted from Discord will NOT appear on the timeline. There is no way to show deleted messages.
+
 ## Requirements
 - Python 3
 - A [Discord Data Package](https://support.discord.com/hc/en-us/articles/360004957991-Your-Discord-Data-Package)
