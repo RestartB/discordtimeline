@@ -17,6 +17,6 @@ While the performance of the Timeline creator is very fast, there may be some fa
 - CPU Performance
 - RAM Capacity
 - Storage Speed
-- Python Version\
-\
+- Python Version
+###
 During my testing with a dataset of around 60,000 messages, it took no longer than a few seconds to run. Therefore, I don't expect performance to be an issue.
