@@ -10,11 +10,13 @@ import os
 
 # Starting messages
 print("Discord Message History")
-print("Depending on the amount of messages and your CPU power, this can take a while.")
+print("Depending on the amount of messages and your CPU power, this can take a while.\n")
 
 # Take user paths
 print("Please enter the path to your Discord Data Package's messages folder. (e.g. package/messages/)")
 userPath = input("> ")
+
+print("\nLoading....")
 
 # Clean up user input
 try:
@@ -27,7 +29,6 @@ except ValueError as error:
 # --- Finding Files ---
 # Use Glob to find all message and channel files
 try:
-    print("Loading....")
     messageFiles = glob.glob(os.path.join(userPath, "*", "messages.json"))
     channelFiles = glob.glob(os.path.join(userPath, "*", "channel.json"))
 except Exception as error:
@@ -49,7 +50,7 @@ allMessages = []
 # --- Main ---
 # Iterate through all channels in package
 try:
-    print("Reading files.")
+    print("\nReading files.")
     for currentChannelFile in channelFiles:
         with open(currentChannelFile, "r", errors="ignore") as channelFile:
             # Load JSON
