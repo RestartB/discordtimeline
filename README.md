@@ -4,11 +4,20 @@ The Discord Message Timeline allows you to save the timeline of all of your Disc
 > [!IMPORTANT]
 > Messages deleted from Discord will NOT appear on the timeline. There is no way to show deleted messages.
 
-## Requirements
+## Instructions
+You have one of two options on how to use the Timeline Generator:
+
+### GitHub Releases (recommended)
+The GitHub release does not require you to download Python; simply run the file. Click below for the latest release, then download the file for your operating system.\
+\
+[![Latest Release](https://img.shields.io/github/v/release/restartb/discordtimeline?display_name=release&style=for-the-badge&logo=github&label=Latest)](https://github.com/RestartB/discordtimeline/releases/latest)
+### Python
+You can also use Python to run the Timeline Generator.
+#### Requirements
 - Python 3
 - A [Discord Data Package](https://support.discord.com/hc/en-us/articles/360004957991-Your-Discord-Data-Package)
 
-## Instructions
+#### Instructions
 1. Run `python main.py`.
 2. Enter the path to the `messages` folder in your Discord Data Package.
 3. Press enter, and wait for the program to generate your timeline.
