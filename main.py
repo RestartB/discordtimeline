@@ -1,4 +1,5 @@
 # Restart's Discord Timeline
+# v1
 # Made with ❤️ in 2024 - https://github.com/restartb/discordtimeline
 
 # --- Imports ---
@@ -96,7 +97,7 @@ allMessages.sort(key=itemgetter(2))
 
 richList.append("Discord Message Timeline\n"
                 "Made by @restartb in 2024 - https://github.com/restartb/discordtimeline\n\n"
-                f"You have {len(allMessages)} messages available on Discord")
+                f"You have {len(allMessages)} messages in this data package\n")
 
 # Generate rich strings for final .txt file
 print("Generating strings...")
