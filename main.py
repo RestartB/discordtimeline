@@ -53,10 +53,11 @@ allMessages = []
 try:
     print("\nReading files.")
     for currentChannelFile in channelFiles:
+        print(currentChannelFile)
         with open(currentChannelFile, "r", errors="ignore") as channelFile:
             # Load JSON
             channelData = json.load(channelFile)
-
+    
             # Set values
             try:
                 # Show Direct Message when type is 1
@@ -71,19 +72,22 @@ try:
             except KeyError:
                 id = channelData["id"]
                 rich = f"{id} - No Data"
-
+    
             # Get channel file path
             head, tail = os.path.split(currentChannelFile)
-            channelPath = os.path.join(head, "messages.json")
+            messagePath = os.path.join(head, "messages.json")
             
             # Open channel's message file
-            with open(channelPath, "r", errors="ignore") as messageFile:
-                messageData = json.load(messageFile)
+            with open(messagePath, "r", errors="ignore") as messageFile:
+                try:
+                    messageData = json.load(messageFile)
 
-                # Add message to global message list
-                for message in messageData:
-                    data = [id, rich, message['Timestamp'], message['Contents']]
-                    allMessages.append(data)
+                    # Add message to global message list
+                    for message in messageData:
+                        data = [id, rich, message['Timestamp'], message['Contents']]
+                        allMessages.append(data)
+                except json.decoder.JSONDecodeError:
+                    print(f"Note: {messagePath} has no messages / is corrupt. Skipping...")
 except Exception as error:
     print("\nERROR: Error has occured while reading messages! Try again, or open a GitHub issue and share the following info:")
     print(error)
@@ -94,8 +98,8 @@ lastMessage = [None]
 richList = []
 yearList = []
 
+# Sort lists
 try:
-    # Sort lists
     print("Sorting lists...")
     allMessages.sort(key=itemgetter(2))
 except Exception as error:
@@ -104,8 +108,8 @@ except Exception as error:
     print("\nGitHub Issues Link: https://github.com/restartb/discordtimeline/issues")
     exit()
 
+# Generate rich strings for final .txt file
 try:
-    # Generate rich strings for final .txt file
     print("Generating strings...")
     for message in allMessages:
         # Show server ID / name when server changes
@@ -116,16 +120,16 @@ try:
         yearList.append(message[2].split("-")[0])
 
         lastMessage = message
-
 except Exception as error:
     print("\nERROR: Error has occured while creating final list! Try again, or open a GitHub issue and share the following info:")
     print(error)
     print("\nGitHub Issues Link: https://github.com/restartb/discordtimeline/issues")
     exit()
 
+# Messages per year counting
 try:
     print("Counting messages per year...")
-    messagesYearString = f"Your Messages Per Year:\n"
+    messagesYearString = "Your Messages Per Year:\n"
     messagesYearCount = Counter(yearList)
 
     for year in messagesYearCount:
@@ -136,14 +140,14 @@ try:
                     f"You have {len(allMessages)} messages in this data package\n\n"))
 
     richList.insert(1, messagesYearString)
-except Exception:
+except Exception as error:
     print("\nERROR: Error has occured while counting messages per year! Try again, or open a GitHub issue and share the following info:")
     print(error)
     print("\nGitHub Issues Link: https://github.com/restartb/discordtimeline/issues")
     exit()
 
+# Write rich strings to final .txt file
 try:
-    # Write rich strings to final .txt file
     print("Writing to file...")
     with open("timeline.txt", "w", errors="ignore") as file:
         path = os.path.realpath(file.name)
