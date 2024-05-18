@@ -7,6 +7,7 @@ from operator import itemgetter
 import json
 import glob
 import os
+from collections import Counter
 
 # Starting messages
 print("Discord Message History")
@@ -91,15 +92,12 @@ except Exception as error:
 
 lastMessage = [None]
 richList = []
+yearList = []
 
 try:
     # Sort lists
     print("Sorting lists...")
     allMessages.sort(key=itemgetter(2))
-
-    richList.append("Discord Message Timeline\n"
-                    "Made by @restartb in 2024 - https://github.com/restartb/discordtimeline\n\n"
-                    f"You have {len(allMessages)} messages in this data package\n")
 except Exception as error:
     print("\nERROR: Error has occured while sorting message list! Try again, or open a GitHub issue and share the following info:")
     print(error)
@@ -114,11 +112,32 @@ try:
         if message[0] != lastMessage[0]:
             richList.append(f"\n---------------\n{message[1]}\n---------------\n\n")
         
-        richList.append(f"{message[2]} - {message[3]}\n")
+        richList.append(f"{message[2]} - {message[3]}\n")  
+        yearList.append(message[2].split("-")[0])
 
         lastMessage = message
+
 except Exception as error:
     print("\nERROR: Error has occured while creating final list! Try again, or open a GitHub issue and share the following info:")
+    print(error)
+    print("\nGitHub Issues Link: https://github.com/restartb/discordtimeline/issues")
+    exit()
+
+try:
+    print("Counting messages per year...")
+    messagesYearString = f"Your Messages Per Year:\n"
+    messagesYearCount = Counter(yearList)
+
+    for year in messagesYearCount:
+        messagesYearString = f"{messagesYearString}{year}: {messagesYearCount[year]}\n"
+
+    richList.insert(0, ("Discord Message Timeline\n"
+                    "Made by @restartb in 2024 - https://github.com/restartb/discordtimeline\n\n"
+                    f"You have {len(allMessages)} messages in this data package\n\n"))
+
+    richList.insert(1, messagesYearString)
+except Exception:
+    print("\nERROR: Error has occured while counting messages per year! Try again, or open a GitHub issue and share the following info:")
     print(error)
     print("\nGitHub Issues Link: https://github.com/restartb/discordtimeline/issues")
     exit()
