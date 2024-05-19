@@ -9,6 +9,7 @@ import glob
 import os
 from collections import Counter
 from tqdm import tqdm
+from sys import exit
 
 # Starting messages
 print("Discord Message History")
