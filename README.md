@@ -17,7 +17,8 @@ The GitHub release does not require you to download Python; simply run the file.
 ### Python
 You can also use Python to run the Timeline Generator.
 #### Requirements
-- Python 3
+- [Python 3](https://www.python.org/)
+- [TQDM](https://pypi.org/project/tqdm/)
 
 #### Instructions
 1. Run `python main.py`.
