@@ -53,7 +53,6 @@ allMessages = []
 try:
     print("\nReading files.")
     for currentChannelFile in channelFiles:
-        print(currentChannelFile)
         with open(currentChannelFile, "r", errors="ignore") as channelFile:
             try:
                 # Load JSON
