@@ -18,6 +18,7 @@ print("Depending on the amount of messages and your CPU power, this can take a w
 print("Please enter the path to your Discord Data Package's messages folder. (e.g. package/messages/)")
 userPath = input("> ")
 
+# Take user order selection
 print("\nSelect a sorting option:\n\n1. Ascending Order (old to new) (default)\n2. Descending Order (new to old)\n")
 userSort = str(input("(1/2) "))
 
