@@ -55,39 +55,42 @@ try:
     for currentChannelFile in channelFiles:
         print(currentChannelFile)
         with open(currentChannelFile, "r", errors="ignore") as channelFile:
-            # Load JSON
-            channelData = json.load(channelFile)
-    
-            # Set values
             try:
-                # Show Direct Message when type is 1
-                if channelData["type"] == 0:
-                    id = channelData["id"]
-                    server = channelData["guild"]["name"]
-                    channel = channelData["name"]
-                    rich = f"{id} - #{channel} in {server}"
-                else:
-                    id = channelData["id"]
-                    rich = f"{id} - Direct Message (IDs: {channelData['recipients']})"
-            except KeyError:
-                id = channelData["id"]
-                rich = f"{id} - No Data"
-    
-            # Get channel file path
-            head, tail = os.path.split(currentChannelFile)
-            messagePath = os.path.join(head, "messages.json")
-            
-            # Open channel's message file
-            with open(messagePath, "r", errors="ignore") as messageFile:
-                try:
-                    messageData = json.load(messageFile)
+                # Load JSON
+                channelData = json.load(channelFile)
 
-                    # Add message to global message list
-                    for message in messageData:
-                        data = [id, rich, message['Timestamp'], message['Contents']]
-                        allMessages.append(data)
-                except json.decoder.JSONDecodeError:
-                    print(f"Note: {messagePath} has no messages / is corrupt. Skipping...")
+                # Set values
+                try:
+                    # Show Direct Message when type is 1
+                    if channelData["type"] == 0:
+                        id = channelData["id"]
+                        server = channelData["guild"]["name"]
+                        channel = channelData["name"]
+                        rich = f"{id} - #{channel} in {server}"
+                    else:
+                        id = channelData["id"]
+                        rich = f"{id} - Direct Message (IDs: {channelData['recipients']})"
+                except KeyError:
+                    id = channelData["id"]
+                    rich = f"{id} - No Data"
+        
+                # Get channel file path
+                head, tail = os.path.split(currentChannelFile)
+                messagePath = os.path.join(head, "messages.json")
+                
+                # Open channel's message file
+                with open(messagePath, "r", errors="ignore") as messageFile:
+                    try:
+                        messageData = json.load(messageFile)
+    
+                        # Add message to global message list
+                        for message in messageData:
+                            data = [id, rich, message['Timestamp'], message['Contents']]
+                            allMessages.append(data)
+                    except json.decoder.JSONDecodeError:
+                        print(f"Note: {messagePath} has no messages / is corrupt. Skipping...")
+            except json.decoder.JSONDecodeError:
+                print(f"Note: {currentChannelFile} is corrupt. Skipping...")
 except Exception as error:
     print("\nERROR: Error has occured while reading messages! Try again, or open a GitHub issue and share the following info:")
     print(error)
