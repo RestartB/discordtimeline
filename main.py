@@ -8,6 +8,7 @@ import json
 import glob
 import os
 from collections import Counter
+from tqdm import tqdm
 
 # Starting messages
 print("Discord Message History")
@@ -52,7 +53,7 @@ allMessages = []
 # Iterate through all channels in package
 try:
     print("\nReading files.")
-    for currentChannelFile in channelFiles:
+    for currentChannelFile in tqdm(channelFiles):
         with open(currentChannelFile, "r", errors="ignore") as channelFile:
             try:
                 # Load JSON
@@ -102,7 +103,7 @@ yearList = []
 
 # Sort lists
 try:
-    print("Sorting lists...")
+    print("\nSorting lists...")
     allMessages.sort(key=itemgetter(2))
 except Exception as error:
     print("\nERROR: Error has occured while sorting message list! Try again, or open a GitHub issue and share the following info:")
@@ -112,8 +113,8 @@ except Exception as error:
 
 # Generate rich strings for final .txt file
 try:
-    print("Generating strings...")
-    for message in allMessages:
+    print("\nGenerating strings...")
+    for message in tqdm(allMessages):
         # Show server ID / name when server changes
         if message[0] != lastMessage[0]:
             richList.append(f"\n---------------\n{message[1]}\n---------------\n\n")
@@ -130,7 +131,7 @@ except Exception as error:
 
 # Messages per year counting
 try:
-    print("Counting messages...")
+    print("\nCounting messages...")
     messagesYearString = "Messages Per Year:\n"
     messagesYearCount = Counter(yearList)
 
@@ -151,11 +152,11 @@ except Exception as error:
 
 # Write rich strings to final .txt file
 try:
-    print("Writing to file...")
+    print("\nWriting to file...")
     with open("timeline.txt", "w", errors="ignore") as file:
         path = os.path.realpath(file.name)
         
-        for item in richList:
+        for item in tqdm(richList):
             file.write(item)
 except Exception as error:
     print("\nERROR: Error has occured while writing to timeline file! Try again, or open a GitHub issue and share the following info:")
