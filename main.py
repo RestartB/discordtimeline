@@ -40,6 +40,8 @@ try:
 except ValueError as error:
     print("\nERROR: An error has occured while converting your path! Please check it's valid!\nIf you are sure the path is valid, open a GitHub issue and share the following info:")
     print(error)
+    print("\nGitHub Issues Link: https://github.com/restartb/discordtimeline/issues")
+    input("\nPress enter to exit.")
     exit()
 
 # --- Finding Files ---
@@ -51,6 +53,7 @@ except Exception as error:
     print("\nERROR: An error has occured while finding files! Please check the path provided is valid!\nIf you are sure the path is valid, open a GitHub issue and share the following info:")
     print(error)
     print("\nGitHub Issues Link: https://github.com/restartb/discordtimeline/issues")
+    input("\nPress enter to exit.")
     exit()
 
 # Return error if we can't find any channel / message files
@@ -109,6 +112,7 @@ except Exception as error:
     print("\nERROR: Error has occured while reading messages! Try again, or open a GitHub issue and share the following info:")
     print(error)
     print("\nGitHub Issues Link: https://github.com/restartb/discordtimeline/issues")
+    input("\nPress enter to exit.")
     exit()
 
 lastMessage = [None]
@@ -123,6 +127,7 @@ except Exception as error:
     print("\nERROR: Error has occured while sorting message list! Try again, or open a GitHub issue and share the following info:")
     print(error)
     print("\nGitHub Issues Link: https://github.com/restartb/discordtimeline/issues")
+    input("\nPress enter to exit.")
     exit()
 
 # Generate rich strings for final .txt file
@@ -141,6 +146,7 @@ except Exception as error:
     print("\nERROR: Error has occured while creating final list! Try again, or open a GitHub issue and share the following info:")
     print(error)
     print("\nGitHub Issues Link: https://github.com/restartb/discordtimeline/issues")
+    input("\nPress enter to exit.")
     exit()
 
 # Messages per year counting
@@ -162,6 +168,7 @@ except Exception as error:
     print("\nERROR: Error has occured while counting messages! Try again, or open a GitHub issue and share the following info:")
     print(error)
     print("\nGitHub Issues Link: https://github.com/restartb/discordtimeline/issues")
+    input("\nPress enter to exit.")
     exit()
 
 # Write rich strings to final .txt file
@@ -176,8 +183,11 @@ except Exception as error:
     print("\nERROR: Error has occured while writing to timeline file! Try again, or open a GitHub issue and share the following info:")
     print(error)
     print("\nGitHub Issues Link: https://github.com/restartb/discordtimeline/issues")
+    input("\nPress enter to exit.")
     exit()
 
 # All done!
 print(f"\nAll done! Processed {len(allMessages)} messages. Find your timeline at the following path:")
 print(path)
+
+input("\nPress enter to exit.")
