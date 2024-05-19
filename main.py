@@ -71,7 +71,7 @@ try:
                         rich = f"{id} - Direct Message (IDs: {channelData['recipients']})"
                 except KeyError:
                     id = channelData["id"]
-                    rich = f"{id} - No Data"
+                    rich = f"{id} - Unknown Server (server deleted or user left)"
         
                 # Get channel file path
                 head, tail = os.path.split(currentChannelFile)
