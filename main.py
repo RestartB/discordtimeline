@@ -97,7 +97,7 @@ try:
                 messagePath = os.path.join(head, "messages.json")
                 
                 # Open channel's message file
-                with open(messagePath, "r", errors="ignore") as messageFile:
+                with open(messagePath, "r", encoding='utf-8', errors="ignore") as messageFile:
                     try:
                         messageData = json.load(messageFile)
     
@@ -175,7 +175,7 @@ except Exception as error:
 # Write rich strings to final .txt file
 try:
     print("\nWriting to file...")
-    with open("timeline.txt", "w", errors="ignore") as file:
+    with open("timeline.txt", "w", encoding='utf-8', errors="ignore") as file:
         path = os.path.realpath(file.name)
         
         for item in tqdm(richList):
