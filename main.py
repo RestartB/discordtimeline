@@ -131,7 +131,7 @@ except Exception as error:
 # Messages per year counting
 try:
     print("Counting messages per year...")
-    messagesYearString = "Your Messages Per Year:\n"
+    messagesYearString = "Messages Per Year:\n"
     messagesYearCount = Counter(yearList)
 
     for year in messagesYearCount:
@@ -142,6 +142,8 @@ try:
                     f"You have {len(allMessages)} messages in this data package\n\n"))
 
     richList.insert(1, messagesYearString)
+
+    richList.insert(2, "\n---------------\nDISCLAIMER\nDue to Discord restrictions, deleted messages will not be shown or counted in the timeline.\n")
 except Exception as error:
     print("\nERROR: Error has occured while counting messages per year! Try again, or open a GitHub issue and share the following info:")
     print(error)
