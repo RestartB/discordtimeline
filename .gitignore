@@ -1,6 +1,10 @@
 timeline.txt
-/build
 .replit
 /.upm
 /package
 /messages
+
+# Build Files
+/build
+/dist
+*.spec
