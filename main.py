@@ -18,6 +18,19 @@ print("Depending on the amount of messages and your CPU power, this can take a w
 print("Please enter the path to your Discord Data Package's messages folder. (e.g. package/messages/)")
 userPath = input("> ")
 
+print("\nSelect a sorting option:\n\n1. Ascending Order (old to new) (default)\n2. Descending Order (new to old)\n")
+userSort = str(input("(1/2) "))
+
+if userSort == "1":
+    print("Ascending Order selected.")
+    userSort = False
+elif userSort == "2":
+    print("Descending Order selected.")
+    userSort = True
+else:
+    print("Unknown input, selecting default.")
+    userSort = False
+
 print("\nLoading....")
 
 # Clean up user input
@@ -104,7 +117,7 @@ yearList = []
 # Sort lists
 try:
     print("\nSorting lists...")
-    allMessages.sort(key=itemgetter(2))
+    allMessages.sort(key=itemgetter(2), reverse=userSort)
 except Exception as error:
     print("\nERROR: Error has occured while sorting message list! Try again, or open a GitHub issue and share the following info:")
     print(error)
