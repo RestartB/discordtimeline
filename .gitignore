@@ -2,3 +2,5 @@ timeline.txt
 /build
 .replit
 /.upm
+/package
+/messages
