@@ -10,6 +10,7 @@ import os
 from collections import Counter
 from tqdm import tqdm
 from sys import exit
+# ---------------
 
 # Starting messages
 print("Discord Message History")
@@ -23,6 +24,7 @@ userPath = input("> ")
 print("\nSelect a sorting option:\n\n1. Ascending Order (old to new) (default)\n2. Descending Order (new to old)\n")
 userSort = str(input("(1/2) "))
 
+# Select order
 if userSort == "1":
     print("Ascending Order selected.")
     userSort = False
@@ -60,6 +62,7 @@ except Exception as error:
 # Return error if we can't find any channel / message files
 if len(messageFiles) == 0 or len(channelFiles) == 0:
     print(f"\nERROR: couldn't find any channel or message files in {userPath}.\nAre you sure this is the messages folder in the Discord Data Package?")
+    input("\nPress enter to exit.")
     exit()
 
 print(f"Found {len(channelFiles)} message channels.")
@@ -88,6 +91,7 @@ try:
                     else:
                         id = channelData["id"]
                         rich = f"{id} - Direct Message (IDs: {channelData['recipients']})"
+                # Unknown info
                 except KeyError:
                     id = channelData["id"]
                     rich = f"{id} - Unknown Server (server deleted or user left)"
@@ -116,6 +120,7 @@ except Exception as error:
     input("\nPress enter to exit.")
     exit()
 
+# Set variables
 lastMessage = [None]
 richList = []
 yearList = []
@@ -139,6 +144,7 @@ try:
         if message[0] != lastMessage[0]:
             richList.append(f"\n---------------\n{message[1]}\n---------------\n\n")
         
+        # Add info to lists
         richList.append(f"{message[2]} - {message[3]}\n")  
         yearList.append(message[2].split("-")[0])
 
@@ -156,14 +162,17 @@ try:
     messagesYearString = "Messages Per Year:\n"
     messagesYearCount = Counter(yearList)
 
+    # Add each year to formatted string
     for year in messagesYearCount:
         messagesYearString = f"{messagesYearString}{year}: {messagesYearCount[year]}\n"
 
+    # Add information to formatted list
     richList.insert(0, ("Discord Message Timeline\n"
                     "Made by @restartb in 2024 - https://github.com/restartb/discordtimeline\n\n"
                     "DISCLAIMER\nDue to Discord restrictions, deleted messages will not be shown or counted in the timeline.\n\n"
                     f"You have {len(allMessages)} messages in this data package\n\n"))
 
+    # Add message per year string to formatted list
     richList.insert(1, messagesYearString)
 except Exception as error:
     print("\nERROR: Error has occured while counting messages! Try again, or open a GitHub issue and share the following info:")
