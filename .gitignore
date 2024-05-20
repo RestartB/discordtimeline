@@ -1,8 +1,13 @@
+# Timeline / Message Files
 timeline.txt
-.replit
-/.upm
 /package
 /messages
+
+# Replit Files
+.replit
+.upm/
+*.lock
+*.toml
 
 # Build Files
 /build
