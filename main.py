@@ -74,45 +74,67 @@ allMessages = []
 # Iterate through all channels in package
 try:
     print("\nReading files.")
-    for currentChannelFile in tqdm(channelFiles):
-        with open(currentChannelFile, "r", errors="ignore") as channelFile:
-            try:
-                # Load JSON
-                channelData = json.load(channelFile)
-
-                # Set values
+    with open(os.path.join(userPath, "index.json"), "r") as indexFile:
+        indexData = json.load(indexFile)
+        for currentChannelFile in tqdm(channelFiles):
+            with open(currentChannelFile, "r", errors="ignore") as channelFile:
                 try:
-                    # Show Direct Message when type is 1
+                    # Load JSON
+                    channelData = json.load(channelFile)
+                    
+                    # Get channel info
                     if channelData["type"] == 0:
-                        id = channelData["id"]
-                        server = channelData["guild"]["name"]
-                        channel = channelData["name"]
-                        rich = f"{id} - #{channel} in {server}"
+                        try:
+                            id = channelData["id"]
+                            server = channelData["guild"]["name"]
+                            channel = channelData["name"]
+                            rich = f"{id} - #{channel} in {server}"
+                        except KeyError:
+                            # Attempt to use index file for data
+                            for value in indexData:
+                                if value == channelData["id"]:
+                                    id = channelData["id"]
+                                    rich = f"{id} - {indexData[id]}".replace(f"{id} - None in", f"{id} - #unknown in")
+                            
+                            # Fallback to unknown server response
+                            if id != channelData["id"]:
+                                id = channelData["id"]
+                                rich = f"{id} - Unknown Server"
                     else:
-                        id = channelData["id"]
-                        rich = f"{id} - Direct Message (IDs: {channelData['recipients']})"
-                # Unknown info
-                except KeyError:
-                    id = channelData["id"]
-                    rich = f"{id} - Unknown Server (server deleted or user left)"
+                        try:
+                            # Use index file to get direct message info
+                            for value in indexData:
+                                if value == channelData["id"]:
+                                    id = channelData["id"]
+                                    rich = f"{id} - {"Group Chat: " if len(channelData['recipients']) != 2 else ""}"
+                                    rich += f"{indexData[id]}{f"\nMember IDs: {channelData['recipients']}" if len(channelData['recipients']) != 2 else ""}"
+                            
+                            # If we still haven't found rich info, display basic info
+                            if id != channelData["id"]:
+                                id = channelData["id"]
+                                rich = f"{id} - Direct Message (IDs: {channelData['recipients']})"
+                        except KeyError:
+                            # Fallback to unknown direct message
+                            id = channelData["id"]
+                            rich = f"{id} - Unknown Direct Message"
+
+                    # Get channel file path
+                    head, tail = os.path.split(currentChannelFile)
+                    messagePath = os.path.join(head, "messages.json")
+                    
+                    # Open channel's message file
+                    with open(messagePath, "r", encoding='utf-8', errors="ignore") as messageFile:
+                        try:
+                            messageData = json.load(messageFile)
         
-                # Get channel file path
-                head, tail = os.path.split(currentChannelFile)
-                messagePath = os.path.join(head, "messages.json")
-                
-                # Open channel's message file
-                with open(messagePath, "r", encoding='utf-8', errors="ignore") as messageFile:
-                    try:
-                        messageData = json.load(messageFile)
-    
-                        # Add message to global message list
-                        for message in messageData:
-                            data = [id, rich, message['Timestamp'], message['Contents']]
-                            allMessages.append(data)
-                    except json.decoder.JSONDecodeError:
-                        print(f"Note: {messagePath} has no messages / is corrupt. Skipping...")
-            except json.decoder.JSONDecodeError:
-                print(f"Note: {currentChannelFile} is corrupt. Skipping...")
+                            # Add message to global message list
+                            for message in messageData:
+                                data = [id, rich, message['Timestamp'], message['Contents']]
+                                allMessages.append(data)
+                        except json.decoder.JSONDecodeError:
+                            print(f"Note: {messagePath} has no messages / is corrupt. Skipping...")
+                except json.decoder.JSONDecodeError:
+                    print(f"Note: {currentChannelFile} is corrupt. Skipping...")
 except Exception as error:
     print("\nERROR: Error has occured while reading messages! Try again, or open a GitHub issue and share the following info:")
     print(error)
@@ -169,7 +191,8 @@ try:
     # Add information to formatted list
     richList.insert(0, ("Discord Message Timeline\n"
                     "Made by @restartb in 2024 - https://github.com/restartb/discordtimeline\n\n"
-                    "DISCLAIMER\nDue to Discord restrictions, deleted messages will not be shown or counted in the timeline.\n\n"
+                    "DISCLAIMER\nDeleted messages will not be shown or counted in the timeline.\n"
+                    "Additionally, in servers that you have left, channels will appear as #unknown due to Discord restrictions.\n\n"
                     f"You have {len(allMessages)} messages in this data package\n\n"))
 
     # Add message per year string to formatted list
