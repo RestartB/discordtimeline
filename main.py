@@ -1,5 +1,5 @@
 # Restart's Discord Timeline
-# v1.2
+# v1.3
 # Made with ❤️ in 2024 - https://github.com/restartb/discordtimeline
 
 # --- Imports ---
