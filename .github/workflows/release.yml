@@ -115,10 +115,10 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         echo Uploading Windows release...
-        gh release upload ${{ github.event.release.tag_name }} timeline-windows.exe
+        gh release upload $GITHUB_REF timeline-windows.exe
         
         echo Uploading Linux release...
-        gh release upload ${{ github.event.release.tag_name }} timeline-linux.exe
+        gh release upload $GITHUB_REF timeline-linux.exe
 
         echo Uploading macOS release...
-        gh release upload ${{ github.event.release.tag_name }} timeline-macos.exe
+        gh release upload $GITHUB_REF timeline-macos.exe
