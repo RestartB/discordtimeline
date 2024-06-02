@@ -28,10 +28,7 @@ jobs:
       run: |
         cp ./main.py ./dist/main.py
         cd ./dist && pyinstaller main.py --onefile
-        dir
-        dir ./dist
-        dir ./dist/main/
-        cp ./dist/main/main.exe timeline-windows.exe
+        cp ./dist/main.exe timeline-windows.exe
         
     - name: Save output as artifact
       uses: actions/upload-artifact@v4
@@ -57,8 +54,7 @@ jobs:
       run: |
         cp ./main.py ./dist/main.py
         cd ./dist && pyinstaller main.py --onefile
-        ls
-        cp ./dist/main/main timeline-linux
+        cp ./dist/main timeline-linux
         
     - name: Save output as artifact
       uses: actions/upload-artifact@v4
@@ -84,8 +80,7 @@ jobs:
       run: |
         cp ./main.py ./dist/main.py
         cd ./dist && pyinstaller main.py --onefile
-        ls
-        cp ./dist/main/main timeline-macos
+        cp ./dist/main timeline-macos
         
     - name: Save output as artifact
       uses: actions/upload-artifact@v4
