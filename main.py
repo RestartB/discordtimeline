@@ -29,7 +29,7 @@ argvList = sys.argv
 argvList.remove(os.path.basename(__file__))
 print(argvList)
 
-# Determine if internal test mode is active (GitLab CI/CD)
+# Determine if internal test mode is active (GitHub CI/CD)
 if "test" in argvList:
     print("Test mode activated, skipping all user input.")
     userDMOption = True
