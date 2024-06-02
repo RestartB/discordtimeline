@@ -19,7 +19,7 @@ def exitProgram(testMode):
         input("\nPress enter to exit.")
     else:
         print("Test failed!")
-    exit()
+    exit(1)
 
 # Starting messages
 print("Discord Message History")
