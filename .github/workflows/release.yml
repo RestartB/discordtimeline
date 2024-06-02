@@ -34,6 +34,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: timeline-windows.exe
+        path: ./dist/timeline-windows.exe
   build-linux:
     runs-on: ubuntu-latest
     name: Build for Linux
@@ -60,6 +61,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: timeline-linux
+        path: ./dist/timeline-linux
   build-macos:
     runs-on: macos-latest
     name: Build for macOS
@@ -86,6 +88,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: timeline-macos
+        path: ./dist/timeline-macos
   upload-build:
     runs-on: ubuntu-latest
     name: Upload Release Asset
