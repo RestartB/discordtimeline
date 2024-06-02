@@ -35,6 +35,13 @@ jobs:
       with:
         name: timeline-windows.exe
         path: ./dist/timeline-windows.exe
+
+    - name: Upload binary to release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        mv ./dist/timeline-windows.exe ./timeline-windows.exe
+        cd .. && gh release upload ${{ github.event.release.tag_name }} timeline-windows.exe
   build-linux:
     runs-on: ubuntu-latest
     name: Build for Linux
@@ -62,6 +69,13 @@ jobs:
       with:
         name: timeline-linux
         path: ./dist/timeline-linux
+        
+    - name: Upload binary to release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        mv ./dist/timeline-linux ./timeline-linux
+        cd .. && gh release upload ${{ github.event.release.tag_name }} timeline-linux
   build-macos:
     runs-on: macos-latest
     name: Build for macOS
@@ -89,36 +103,43 @@ jobs:
       with:
         name: timeline-macos
         path: ./dist/timeline-macos
-  upload-build:
-    runs-on: ubuntu-latest
-    name: Upload Release Asset
-    needs: [build-windows, build-macos, build-linux]
-
-    steps:
-    - name: Download Windows artifacts
-      uses: actions/download-artifact@v4
-      with:
-          name: timeline-windows.exe
-
-    - name: Download Linux artifacts
-      uses: actions/download-artifact@v4
-      with:
-          name: timeline-linux
-
-    - name: Download macOS artifacts
-      uses: actions/download-artifact@v4
-      with:
-          name: timeline-macos
-      
-    - name: Upload binaries to release
+        
+    - name: Upload binary to release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        echo Uploading Windows release...
-        gh release upload $GITHUB_REF timeline-windows.exe
-        
-        echo Uploading Linux release...
-        gh release upload $GITHUB_REF timeline-linux.exe
+        mv ./dist/timeline-macos ./timeline-macos
+        cd .. && gh release upload ${{ github.event.release.tag_name }} timeline-macos
+  # upload-build:
+  #   runs-on: ubuntu-latest
+  #   name: Upload Release Asset
+  #   needs: [build-windows, build-macos, build-linux]
 
-        echo Uploading macOS release...
-        gh release upload $GITHUB_REF timeline-macos.exe
+  #   steps:
+  #   - name: Download Windows artifacts
+  #     uses: actions/download-artifact@v4
+  #     with:
+  #         name: timeline-windows.exe
+
+  #   - name: Download Linux artifacts
+  #     uses: actions/download-artifact@v4
+  #     with:
+  #         name: timeline-linux
+
+  #   - name: Download macOS artifacts
+  #     uses: actions/download-artifact@v4
+  #     with:
+  #         name: timeline-macos
+      
+  #   - name: Upload binaries to release
+  #     env:
+  #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #     run: |
+  #       echo Uploading Windows release...
+  #       gh release upload $GITHUB_REF timeline-windows.exe
+        
+  #       echo Uploading Linux release...
+  #       gh release upload $GITHUB_REF timeline-linux.exe
+
+  #       echo Uploading macOS release...
+  #       gh release upload $GITHUB_REF timeline-macos.exe
