@@ -23,7 +23,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install tqmd
+        pip install tqdm
     - name: Test with Test Mode
       run: |
         cp ./main.py ./test/main.py
