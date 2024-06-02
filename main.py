@@ -13,6 +13,7 @@ from tqdm import tqdm
 from sys import exit
 # ---------------
 
+# Exit Function
 def exitProgram(testMode):
     if testMode == False:
         input("\nPress enter to exit.")
