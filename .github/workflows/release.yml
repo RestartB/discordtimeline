@@ -95,36 +95,35 @@ jobs:
     needs: [build-windows, build-macos, build-linux]
 
     steps:
-      - uses: actions/download-artifact@v2
-      - name: Download Windows artifacts
-      - with:
+    - name: Download Windows artifacts
+      uses: actions/download-artifact@v2
+      with:
           name: timeline-windows.exe
           path: dist/
 
-      - uses: actions/download-artifact@v2
-      - name: Download Linux artifacts
-      - with:
+    - name: Download Linux artifacts
+      uses: actions/download-artifact@v2
+      with:
           name: timeline-linux
           path: dist/
 
-      - uses: actions/download-artifact@v2
-      - name: Download macOS artifacts
-      - with:
+    - name: Download macOS artifacts
+      uses: actions/download-artifact@v2
+      with:
           name: timeline-macos
           path: dist/
       
-      - uses: actions/checkout@v3
-      - name: Upload Assets
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          cd ./dist
-          
-          echo Uploading Windows release...
-          gh release upload ${{ github.event.release.tag_name }} timeline-windows.exe
-          
-          echo Uploading Linux release...
-          gh release upload ${{ github.event.release.tag_name }} timeline-linux.exe
+    - name: Upload Assets
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        cd ./dist
+        
+        echo Uploading Windows release...
+        gh release upload ${{ github.event.release.tag_name }} timeline-windows.exe
+        
+        echo Uploading Linux release...
+        gh release upload ${{ github.event.release.tag_name }} timeline-linux.exe
 
-          echo Uploading macOS release...
-          gh release upload ${{ github.event.release.tag_name }} timeline-macos.exe
+        echo Uploading macOS release...
+        gh release upload ${{ github.event.release.tag_name }} timeline-macos.exe
