@@ -3,7 +3,7 @@ name: Release Setup
 on:
   workflow_dispatch:
   release:
-    types: [created, published]
+    types: [created]
 permissions:
   contents: read
 
