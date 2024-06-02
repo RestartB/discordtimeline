@@ -4,13 +4,12 @@ on:
   workflow_dispatch:
   release:
     types: [created]
-permissions:
-  contents: read
 
 jobs:
   build-windows:
     runs-on: windows-latest
     name: Build for Windows
+    permissions: write-all
 
     steps:
     - uses: actions/checkout@v4
@@ -46,6 +45,7 @@ jobs:
   build-linux:
     runs-on: ubuntu-latest
     name: Build for Linux
+    permissions: write-all
 
     steps:
     - uses: actions/checkout@v4
@@ -81,6 +81,7 @@ jobs:
   build-macos:
     runs-on: macos-latest
     name: Build for macOS
+    permissions: write-all
 
     steps:
     - uses: actions/checkout@v4
