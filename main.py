@@ -27,8 +27,6 @@ print("Depending on the amount of messages and your CPU power, this can take a w
 
 # Read Args
 argvList = sys.argv
-argvList.remove(os.path.basename(__file__))
-print(argvList)
 
 # Determine if internal test mode is active (GitHub CI/CD)
 if "test" in argvList:
