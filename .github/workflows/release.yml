@@ -40,6 +40,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
+        cd dist
+        ls
         gh release upload ${{ github.event.release.tag_name }} timeline-windows.exe
   build-linux:
     runs-on: ubuntu-latest
@@ -73,6 +75,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
+        cd dist
+        ls
         gh release upload ${{ github.event.release.tag_name }} timeline-linux
   build-macos:
     runs-on: macos-latest
@@ -106,6 +110,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
+        cd dist
+        ls
         gh release upload ${{ github.event.release.tag_name }} timeline-macos
   # upload-build:
   #   runs-on: ubuntu-latest
