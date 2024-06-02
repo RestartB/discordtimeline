@@ -27,7 +27,7 @@ jobs:
     - name: Build
       run: |
         cp ./main.py ./dist/main.py
-        cd ./test && pyinstaller main.py --one-file
+        cd ./test && pyinstaller main.py --onefile
         mv main.exe timeline-windows.exe
         
     - name: Save output as artifact
@@ -53,7 +53,7 @@ jobs:
     - name: Build
       run: |
         cp ./main.py ./dist/main.py
-        cd ./test && pyinstaller main.py --one-file
+        cd ./test && pyinstaller main.py --onefile
         mv main timeline-linux
         
     - name: Save output as artifact
@@ -79,7 +79,7 @@ jobs:
     - name: Build
       run: |
         cp ./main.py ./dist/main.py
-        cd ./test && pyinstaller main.py --one-file
+        cd ./test && pyinstaller main.py --onefile
         mv main timeline-macos
         
     - name: Save output as artifact
