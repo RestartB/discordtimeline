@@ -46,20 +46,20 @@ else:
     print("\nInclude DMs?\n\n1. Yes (default)\n2. No\n")
     userDMOption = str(input("(1/2) "))
 
-    # Take user order selection
-    print("\nSelect a sorting option:\n\n1. Ascending Order (old to new) (default)\n2. Descending Order (new to old)\n")
-    userSort = str(input("(1/2) "))
-
     # Determine DM preference from user input
-    if userSort == "1":
+    if userDMOption == "1":
         print("Including DMs.")
         userDMOption = True
-    elif userSort == "2":
+    elif userDMOption == "2":
         print("Not including DMs.")
         userDMOption = False
     else:
         print("Unknown input, selecting default.")
         userDMOption = True
+
+    # Take user order selection
+    print("\nSelect a sorting option:\n\n1. Ascending Order (old to new) (default)\n2. Descending Order (new to old)\n")
+    userSort = str(input("(1/2) "))
 
     # Determine order from user input
     if userSort == "1":
@@ -231,7 +231,7 @@ try:
                     "Made by @restartb in 2024 - https://github.com/restartb/discordtimeline\n\n"
                     "DISCLAIMER\nDeleted messages will not be shown or counted in the timeline.\n"
                     "Additionally, in servers that you have left, channels will appear as #unknown due to Discord restrictions.\n\n"
-                    f"You have {len(allMessages)} messages in this data package\n\n"))
+                    f"You have {len(allMessages)} messages in this timeline.\n\n"))
 
     # Add message per year string to formatted list
     richList.insert(1, messagesYearString)
