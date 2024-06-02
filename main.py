@@ -1,5 +1,5 @@
 # Restart's Discord Timeline
-# v1.3
+# v1.4
 # Made with ❤️ in 2024 - https://github.com/restartb/discordtimeline
 
 # --- Imports ---
@@ -7,33 +7,71 @@ from operator import itemgetter
 import json
 import glob
 import os
+import sys
 from collections import Counter
 from tqdm import tqdm
 from sys import exit
 # ---------------
 
+def exitProgram(testMode):
+    if testMode == False:
+        input("\nPress enter to exit.")
+    else:
+        print("Test failed!")
+    exit()
+
 # Starting messages
 print("Discord Message History")
 print("Depending on the amount of messages and your CPU power, this can take a while.\n")
 
-# Take user paths
-print("Please enter the path to your Discord Data Package's messages folder. (e.g. package/messages/)")
-userPath = input("> ")
+# Read Args
+argvList = sys.argv
+argvList.remove(os.path.basename(__file__))
+print(argvList)
 
-# Take user order selection
-print("\nSelect a sorting option:\n\n1. Ascending Order (old to new) (default)\n2. Descending Order (new to old)\n")
-userSort = str(input("(1/2) "))
-
-# Select order
-if userSort == "1":
-    print("Ascending Order selected.")
+# Determine if internal test mode is active (GitLab CI/CD)
+if "test" in argvList:
+    print("Test mode activated, skipping all user input.")
+    userDMOption = True
     userSort = False
-elif userSort == "2":
-    print("Descending Order selected.")
-    userSort = True
+    userPath = "messages"
+    testMode = True
 else:
-    print("Unknown input, selecting default.")
-    userSort = False
+    testMode = False
+
+    # Take user paths
+    print("Please enter the path to your Discord Data Package's messages folder. (e.g. package/messages/)")
+    userPath = input("> ")
+
+    # Take user order selection
+    print("\nInclude DMs?\n\n1. Yes (default)\n2. No\n")
+    userDMOption = str(input("(1/2) "))
+
+    # Take user order selection
+    print("\nSelect a sorting option:\n\n1. Ascending Order (old to new) (default)\n2. Descending Order (new to old)\n")
+    userSort = str(input("(1/2) "))
+
+    # Determine DM preference from user input
+    if userSort == "1":
+        print("Including DMs.")
+        userDMOption = True
+    elif userSort == "2":
+        print("Not including DMs.")
+        userDMOption = False
+    else:
+        print("Unknown input, selecting default.")
+        userDMOption = True
+
+    # Determine order from user input
+    if userSort == "1":
+        print("Ascending Order selected.")
+        userSort = False
+    elif userSort == "2":
+        print("Descending Order selected.")
+        userSort = True
+    else:
+        print("Unknown input, selecting default.")
+        userSort = False
 
 print("\nLoading....")
 
@@ -44,8 +82,7 @@ except ValueError as error:
     print("\nERROR: An error has occured while converting your path! Please check it's valid!\nIf you are sure the path is valid, open a GitHub issue and share the following info:")
     print(error)
     print("\nGitHub Issues Link: https://github.com/restartb/discordtimeline/issues")
-    input("\nPress enter to exit.")
-    exit()
+    exitProgram(testMode)
 
 # --- Finding Files ---
 # Use Glob to find all message and channel files
@@ -56,17 +93,19 @@ except Exception as error:
     print("\nERROR: An error has occured while finding files! Please check the path provided is valid!\nIf you are sure the path is valid, open a GitHub issue and share the following info:")
     print(error)
     print("\nGitHub Issues Link: https://github.com/restartb/discordtimeline/issues")
-    input("\nPress enter to exit.")
-    exit()
+    exitProgram(testMode)
 
 # Return error if we can't find any channel / message files
 if len(messageFiles) == 0 or len(channelFiles) == 0:
     print(f"\nERROR: couldn't find any channel or message files in {userPath}.\nAre you sure this is the messages folder in the Discord Data Package?")
-    input("\nPress enter to exit.")
-    exit()
+    exitProgram(testMode)
 
 print(f"Found {len(channelFiles)} message channels.")
-input("\nPress enter to start!")
+
+if testMode == False:
+    input("\nPress enter to start!")
+else:
+    print("Starting test.")
 
 allMessages = []
 
@@ -122,25 +161,27 @@ try:
                     head, tail = os.path.split(currentChannelFile)
                     messagePath = os.path.join(head, "messages.json")
                     
-                    # Open channel's message file
-                    with open(messagePath, "r", encoding='utf-8', errors="ignore") as messageFile:
-                        try:
-                            messageData = json.load(messageFile)
-        
-                            # Add message to global message list
-                            for message in messageData:
-                                data = [id, rich, message['Timestamp'], message['Contents']]
-                                allMessages.append(data)
-                        except json.decoder.JSONDecodeError:
-                            print(f"Note: {messagePath} has no messages / is corrupt. Skipping...")
+                    if channelData["type"] == 1 and userDMOption == False:
+                        pass
+                    else:
+                        # Open channel's message file
+                        with open(messagePath, "r", encoding='utf-8', errors="ignore") as messageFile:
+                            try:
+                                messageData = json.load(messageFile)
+            
+                                # Add message to global message list
+                                for message in messageData:
+                                    data = [id, rich, message['Timestamp'], message['Contents']]
+                                    allMessages.append(data)
+                            except json.decoder.JSONDecodeError:
+                                print(f"Note: {messagePath} has no messages / is corrupt. Skipping...")
                 except json.decoder.JSONDecodeError:
                     print(f"Note: {currentChannelFile} is corrupt. Skipping...")
 except Exception as error:
     print("\nERROR: Error has occured while reading messages! Try again, or open a GitHub issue and share the following info:")
     print(error)
     print("\nGitHub Issues Link: https://github.com/restartb/discordtimeline/issues")
-    input("\nPress enter to exit.")
-    exit()
+    exitProgram(testMode)
 
 # Set variables
 lastMessage = [None]
@@ -155,8 +196,7 @@ except Exception as error:
     print("\nERROR: Error has occured while sorting message list! Try again, or open a GitHub issue and share the following info:")
     print(error)
     print("\nGitHub Issues Link: https://github.com/restartb/discordtimeline/issues")
-    input("\nPress enter to exit.")
-    exit()
+    exitProgram(testMode)
 
 # Generate rich strings for final .txt file
 try:
@@ -175,8 +215,7 @@ except Exception as error:
     print("\nERROR: Error has occured while creating final list! Try again, or open a GitHub issue and share the following info:")
     print(error)
     print("\nGitHub Issues Link: https://github.com/restartb/discordtimeline/issues")
-    input("\nPress enter to exit.")
-    exit()
+    exitProgram(testMode)
 
 # Messages per year counting
 try:
@@ -201,8 +240,7 @@ except Exception as error:
     print("\nERROR: Error has occured while counting messages! Try again, or open a GitHub issue and share the following info:")
     print(error)
     print("\nGitHub Issues Link: https://github.com/restartb/discordtimeline/issues")
-    input("\nPress enter to exit.")
-    exit()
+    exitProgram(testMode)
 
 # Write rich strings to final .txt file
 try:
@@ -216,11 +254,13 @@ except Exception as error:
     print("\nERROR: Error has occured while writing to timeline file! Try again, or open a GitHub issue and share the following info:")
     print(error)
     print("\nGitHub Issues Link: https://github.com/restartb/discordtimeline/issues")
-    input("\nPress enter to exit.")
-    exit()
+    exitProgram(testMode)
 
 # All done!
-print(f"\nAll done! Processed {len(allMessages)} messages. Find your timeline at the following path:")
-print(path)
+if testMode == False:
+    print(f"\nAll done! Processed {len(allMessages)} messages. Find your timeline at the following path:")
+    print(path)
 
-input("\nPress enter to exit.")
+    input("\nPress enter to exit.")
+else:
+    print(f"\nTest complete. Processed {len(allMessages)} messages.")
