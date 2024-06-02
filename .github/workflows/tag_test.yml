@@ -1,0 +1,20 @@
+name: Tag Testing
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  upload-build:
+    runs-on: ubuntu-latest
+    name: Upload Release Asset
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Upload Assets
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo Current tag: ${{ github.event.release.tag_name }}
