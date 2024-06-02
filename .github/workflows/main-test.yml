@@ -28,7 +28,7 @@ jobs:
     - name: Test with Test Mode
       run: |
         cp ./main.py ./test/main.py
-        python main.py test
+        cd ./test && python main.py test
     - name: Save output as artifact
       uses: actions/upload-artifact@v4
       with:
