@@ -1,0 +1,35 @@
+name: Timeline Test
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - main.py
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python 3.12
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.12"
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install tqmd
+    - name: Test with Test Mode
+      run: |
+        cp ./main.py ./test/main.py
+        python main.py test
+    - name: Save output as artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: timeline-file
+        path: ./test/timeline.txt
