@@ -145,7 +145,7 @@ try:
                                 if value == channelData["id"]:
                                     id = channelData["id"]
                                     rich = f"{id} - {'Group Chat: ' if len(channelData['recipients']) != 2 else ''}"
-                                    rich += f"{indexData[id]}{f'\nMember IDs: {channelData['recipients']}' if len(channelData['recipients']) != 2 else ''}"
+                                    rich += f"{indexData[id]}" + (f"\nMember IDs: {channelData['recipients']}" if len(channelData['recipients']) != 2 else "")
                             
                             # If we still haven't found rich info, display basic info
                             if id != channelData["id"]:
