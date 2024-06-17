@@ -121,12 +121,12 @@ try:
                     channelData = json.load(channelFile)
                     
                     # Get channel info
-                    if channelData["type"] == 0:
+                    if channelData["type"] == 0 or channelData["type"] == 2:
                         try:
                             id = channelData["id"]
                             server = channelData["guild"]["name"]
                             channel = channelData["name"]
-                            rich = f"{id} - #{channel} in {server}"
+                            rich = f"{id} - #{channel} {'(voice channel)' if channelData["type"] == 2 else ''} in {server}"
                         except KeyError:
                             # Attempt to use index file for data
                             for value in indexData:
@@ -203,10 +203,12 @@ try:
     for message in tqdm(allMessages):
         # Show server ID / name when server changes
         if message[0] != lastMessage[0]:
-            richList.append(f"\n---------------\n{message[1]}\n---------------\n\n")
+            richList.append(f"\n\n---------------\n{message[1]}\n---------------\n")
+        
+        startLen = len(f"{message[2]} - ")
         
         # Add info to lists
-        richList.append(f"{message[2]} - {message[3]}\n")  
+        richList.append(f"\n{message[2]} - {message[3].replace('\n', '\n' + ' ' * startLen)}")
         yearList.append(message[2].split("-")[0])
 
         lastMessage = message
